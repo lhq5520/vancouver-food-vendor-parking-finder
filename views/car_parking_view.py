@@ -1,5 +1,4 @@
 '''
-
 VanStreet Parking
 @WeifanLi
 
@@ -7,7 +6,7 @@ This class is
 '''
 
 import random
-from utils.car_parking_utils.car_parking_load import *
+from models.car_parking_load import *
 
 
 def get_all_parking_spot_info():
@@ -19,7 +18,7 @@ def main_menu():
         '''
         incomplete menu
         '''
-        print("\nWelcome to the Parking Info Menu!")
+        print("\nWelcome to the Parking Info for food vendor Menu!")
         print("1. Look up parking info by Meter ID")
         print("2. Look up parking info by Geo local area")
         print("3. view random 10 parking spot info")

@@ -1,5 +1,5 @@
 from views.car_parking_view import *
-from utils.car_parking_utils.car_parking_load import *
+from models.car_parking_load import *
 
 def main():
     try:

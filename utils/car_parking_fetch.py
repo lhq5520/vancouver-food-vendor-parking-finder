@@ -3,10 +3,12 @@ VanStreet Parking
 @WeifanLi
 
 get all spcified data for car parking from parking_meter
+and
+format data from regular expression to tailored class
 '''
 
 import re
-from ..raw_data_fetch import fetch_raw_data
+from utils.raw_data_fetch import fetch_raw_data
 
 URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/parking-meters/exports/json?lang=en&timezone=America%2FLos_Angeles"
 
@@ -14,22 +16,10 @@ URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/parking-m
 # fetch data
 
 def get_all_meterhead() -> str:
-    try:
-        raw_data = fetch_raw_data(URL)
-    except Exception as e:
-        print(f"Error fetching raw data: {e}")
-        return []
-
-    try:
-        meterhead_regex = r'"meterhead":\s*.([^"]*).'  # Regex to find meter IDs
-        meterheads = re.findall(meterhead_regex, raw_data)  # Find all matches
-        return meterheads
-    except re.error as e:
-        print(f"Regex error: {e}")
-        return []
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return []
+    raw_data = fetch_raw_data(URL)
+    meterhead_regex = r'"meterhead":\s*.([^"]*).'  # Regex to find meter IDs
+    meterheads = re.findall(meterhead_regex, raw_data)  # Find all matches
+    return meterheads
 
 
 def get_all_meter_id() -> str:
@@ -40,10 +30,18 @@ def get_all_meter_id() -> str:
 
 
 def get_all_coordinates() -> tuple:
+    # fetch part
     raw_data = fetch_raw_data(URL)
     coordinate_regex = r'"coordinates":\s\[(.\d\w*.\d*,\s\d*.\d*)\]'  # Regex to find coordinate
     coordinates = re.findall(coordinate_regex, raw_data)  # Find all matches
-    return coordinates
+
+    #format part
+    coordinates_floats = []
+    for coord_str in coordinates:
+        lon_str, lat_str = coord_str.split(',')
+        lon, lat = float(lon_str), float(lat_str)
+        coordinates_floats.append((lon, lat))
+    return coordinates_floats
 
 
 def get_all_pay_phone_id() -> str:
@@ -129,47 +127,93 @@ def get_all_time_limit_su_6p_10():
 
 # get rate Mon-Fri 9AM to 6PM
 def get_all_rate_mf_9a_6p():
+    # fetch
     raw_data = fetch_raw_data(URL)
     rate_regex = r'"r_mf_9a_6p":\s*"([^"]*)"'
     rates = re.findall(rate_regex, raw_data)  # Find all matches
-    return rates
+
+    # format
+    parking_rate_floats = []
+    for item in rates:
+        parking_rate = float(item.split("$")[1])
+        parking_rate_floats.append(parking_rate)
+    return parking_rate_floats
 
 
 # get rate Mon-Fri 6PM to 10PM
 def get_all_rate_mf_6p_10():
+    # fetch
     raw_data = fetch_raw_data(URL)
     rate_regex = r'"r_mf_6p_10":\s*"([^"]*)"'
     rates = re.findall(rate_regex, raw_data)  # Find all matches
-    return rates
+    # format
+    parking_rate_floats = []
+    for item in rates:
+        parking_rate = float(item.split("$")[1])
+        parking_rate_floats.append(parking_rate)
+    return parking_rate_floats
 
 
 # get rate Saturady 9AM to 6PM
 def get_all_rate_sa_9a_6p():
+    # fetch
     raw_data = fetch_raw_data(URL)
     rate_regex = r'"r_sa_9a_6p":\s*"([^"]*)"'
     rates = re.findall(rate_regex, raw_data)  # Find all matches
-    return rates
+
+    # format
+    parking_rate_floats = []
+    for item in rates:
+        parking_rate = float(item.split("$")[1])
+        parking_rate_floats.append(parking_rate)
+    return parking_rate_floats
+    
 
 
 # get rate Saturady 6PM to 10PM
 def get_all_rate_sa_6p_10():
+    # fetch
     raw_data = fetch_raw_data(URL)
     rate_regex = r'"r_sa_6p_10":\s*"([^"]*)"'
     rates = re.findall(rate_regex, raw_data)  # Find all matches
-    return rates
+
+    # format
+    parking_rate_floats = []
+    for item in rates:
+        parking_rate = float(item.split("$")[1])
+        parking_rate_floats.append(parking_rate)
+    return parking_rate_floats
+    
 
 
 # get rate Sunday 9AM to 6PM
 def get_all_rate_su_9a_6p():
+    # fetch
     raw_data = fetch_raw_data(URL)
     rate_regex = r'"r_su_9a_6p":\s*"([^"]*)"'
     rates = re.findall(rate_regex, raw_data)  # Find all matches
-    return rates
+
+    # format
+    parking_rate_floats = []
+    for item in rates:
+        parking_rate = float(item.split("$")[1])
+        parking_rate_floats.append(parking_rate)
+    return parking_rate_floats
 
 
 # get rate Sunday 6PM to 10PM
 def get_all_rate_su_6p_10():
+    # fetch
     raw_data = fetch_raw_data(URL)
     rate_regex = r'"r_su_6p_10":\s*"([^"]*)"'
     rates = re.findall(rate_regex, raw_data)  # Find all matches
-    return rates
+
+    # format
+    parking_rate_floats = []
+    for item in rates:
+        parking_rate = float(item.split("$")[1])
+        parking_rate_floats.append(parking_rate)
+    return parking_rate_floats
+
+
+
