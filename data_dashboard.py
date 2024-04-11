@@ -1,40 +1,61 @@
-from views.car_parking_view import *
-from models.car_parking_load import *
+from views.input_view import *
+from views.output_view import *
+from utils.model_helper import *
 
 def main():
-    try:
-        is_running = True
-        while is_running == True:
-            main_menu()
-            choice = user_choice()
+    is_running = True
+    while is_running == True:
+        main_menu()
+        choice = user_choice()
 
-            if choice == "1": # search all lists of object by meter_id
-                # Ex. B42239 is a valid meter_id
-                meter_id = get_car_parking_by_meter_id()
-                parking_spot = get_all_parking_spot_info()
-                parking_spot_info = find_car_parking_by_meter_id(meter_id, parking_spot)
-                print(parking_spot_info)
-                print("\n")
+        if choice == "1": # search all lists of object by meter_id
+            # Ex. B42239 is a valid meter_id
+            parking_info = get_all_parking_info()
+            display_all_parking_info(parking_info)
 
-            elif choice == "2": # search all lists of object by pay_by_phone_id
-                # Ex. Downtown is valid
-                paybyphone_id = get_car_parking_by_geo_local_area()
-                parking_spot = get_all_parking_spot_info()
-                parking_spot_info = find_car_parking_by_geo_local_area(paybyphone_id, parking_spot)
-                for parking_spot in parking_spot_info:
-                    print(parking_spot)
-                    print("\n")
+        elif choice == "2":
+            food_vendors = get_all_food_vendor_info()
+            display_all_food_vendors(food_vendors)
 
-            elif choice == "3":
-                display_10_random_car_parking_info()
+        elif choice == "3": # search all lists of object by geo_local_area
+            # Ex. Downtown is valid
+            parking_info = get_all_parking_info()
+            user_input_geo_local_area = input_geo_local_area()
+            result = find_car_parking_by_geo_local_area(user_input_geo_local_area, parking_info)
+            display_list_of_objects(result)
 
-            elif choice == "4":
-                is_running = False
+        elif choice == "4":
+            # get results of food vendor based on user preference
+            food_vendors = get_all_food_vendor_info()
+            user_input_geo_local_area = input_geo_local_area()
+            user_input_vendor_description = input_description_of_food()
 
-            else:
-                print("Invalid choice, please select 1, 2, 3, or 4")
-    except Exception as e:
-        print(e)
+            first_result = find_food_vendor_based_on_user_preference(user_input_geo_local_area,
+                                                      user_input_vendor_description,
+                                                      food_vendors)
+            display_list_of_objects(first_result)
+
+            user_choose_vendor = input_final_selection_by_key()
+            final_result = find_food_vendor_by_key(user_choose_vendor, first_result)
+            display_list_of_objects(final_result)
+
+            # calculate the nearest parking spot
+            parking_spots = get_all_parking_info()
+            nearest_parking = find_nearest_parking_based_on_vendor(final_result, parking_spots, 0.1)
+            display_list_of_objects(nearest_parking)
+
+
+        elif choice == "5":
+            random_index_list = generate_10_random_index()
+            parking_info  = get_all_parking_info()
+            display_10_random_car_parking_info(random_index_list, parking_info)
+
+
+        elif choice == "6":
+            is_running = False
+
+        else:
+            print("Invalid choice, please select 1, 2, 3, or 4")
 
 
 if __name__ == '__main__':

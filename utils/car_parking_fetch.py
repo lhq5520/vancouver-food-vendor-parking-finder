@@ -9,6 +9,7 @@ format data from regular expression to tailored class
 
 import re
 from utils.raw_data_fetch import fetch_raw_data
+from models.Car_Parking import CarParking
 
 URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/parking-meters/exports/json?lang=en&timezone=America%2FLos_Angeles"
 
@@ -35,7 +36,7 @@ def get_all_coordinates() -> tuple:
     coordinate_regex = r'"coordinates":\s\[(.\d\w*.\d*,\s\d*.\d*)\]'  # Regex to find coordinate
     coordinates = re.findall(coordinate_regex, raw_data)  # Find all matches
 
-    #format part
+    # format part
     coordinates_floats = []
     for coord_str in coordinates:
         lon_str, lat_str = coord_str.split(',')
@@ -72,148 +73,48 @@ def get_all_timeineffee() -> str:
     timeineffe = re.findall(timeineffe_regex, raw_data)  # Find all matches
     return timeineffe
 
-# ------------------below get time limit at different time-----------------
+
+def create_parking_objects():
+    # store all the lists of attributes
+    meter_ids = get_all_meter_id()
+    paybyphone_ids = get_all_pay_phone_id()
+    meterheads = get_all_meterhead()
+    time_in_effects = get_all_timeineffee()
+    creditcards = get_all_creditcard_support_status()
+    geo_local_areas = get_all_geo_local_area()
+    coordinates = get_all_coordinates()
+
+    # load objects into a list
+    car_parking_list = []
+    for i in range(len(meter_ids)):
+        # Access each item by index
+        meter_id = meter_ids[i]
+        paybyphone_id = paybyphone_ids[i]
+        meterhead = meterheads[i]
+        time_in_effect = time_in_effects[i]
+        creditcard = creditcards[i]
+        geo_local_area = geo_local_areas[i]
+        coordinate = coordinates[i]
+
+        # create a CarParking object with these variables
+        car_parking = CarParking(
+            meter_id, paybyphone_id, meterhead, time_in_effect, creditcard,
+            geo_local_area, coordinate
+        )
+        car_parking_list.append(car_parking)
+    return car_parking_list
 
 
-# get Time Limit Mon-Fri 9AM to 6PM
-def get_all_time_limit_mf_9a_6p():
-    raw_data = fetch_raw_data(URL)
-    time_limit_regex = r't_mf_9a_6p":\s*\W(null|[^"]*)'
-    time_limits = re.findall(time_limit_regex, raw_data)  # Find all matches
-    return time_limits
-
-
-# get Time Limit Mon-Fri 6PM to 10PM
-def get_all_time_limit_mf_6p_10():
-    raw_data = fetch_raw_data(URL)
-    time_limit_regex = r'"t_mf_6p_10":\s*\W(null|[^"]*)'
-    time_limits = re.findall(time_limit_regex, raw_data)  # Find all matches
-    return time_limits
-
-
-# get Time Limit Sat 9AM to 6PM
-def get_all_time_limit_sa_9a_6p():
-    raw_data = fetch_raw_data(URL)
-    time_limit_regex = r'"t_sa_9a_6p":\s*\W(null|[^"]*)'
-    time_limits = re.findall(time_limit_regex, raw_data)  # Find all matches
-    return time_limits
-
-
-# get Time Limit Sat 6PM to 10PM
-def get_all_time_limit_sa_6p_10():
-    raw_data = fetch_raw_data(URL)
-    time_limit_regex = r'"t_sa_6p_10":\s*\W(null|[^"]*)'
-    time_limits = re.findall(time_limit_regex, raw_data)  # Find all matches
-    return time_limits
-
-
-# get Time Limit Sun 9AM to 6PM
-def get_all_time_limit_su_9a_6p():
-    raw_data = fetch_raw_data(URL)
-    time_limit_regex = r'"t_su_9a_6p":\s*\W(null|[^"]*)'
-    time_limits = re.findall(time_limit_regex, raw_data)  # Find all matches
-    return time_limits
-
-
-# get Time Limit Sun 6PM to 10PM
-def get_all_time_limit_su_6p_10():
-    raw_data = fetch_raw_data(URL)
-    time_limit_regex = r'"t_su_6p_10":\s*\W(null|[^"]*)'
-    time_limits = re.findall(time_limit_regex, raw_data)  # Find all matches
-    return time_limits
-
-# ---------------------below get different rate at different time ---------------------
-
-
-# get rate Mon-Fri 9AM to 6PM
-def get_all_rate_mf_9a_6p():
-    # fetch
-    raw_data = fetch_raw_data(URL)
-    rate_regex = r'"r_mf_9a_6p":\s*"([^"]*)"'
-    rates = re.findall(rate_regex, raw_data)  # Find all matches
-
-    # format
-    parking_rate_floats = []
-    for item in rates:
-        parking_rate = float(item.split("$")[1])
-        parking_rate_floats.append(parking_rate)
-    return parking_rate_floats
-
-
-# get rate Mon-Fri 6PM to 10PM
-def get_all_rate_mf_6p_10():
-    # fetch
-    raw_data = fetch_raw_data(URL)
-    rate_regex = r'"r_mf_6p_10":\s*"([^"]*)"'
-    rates = re.findall(rate_regex, raw_data)  # Find all matches
-    # format
-    parking_rate_floats = []
-    for item in rates:
-        parking_rate = float(item.split("$")[1])
-        parking_rate_floats.append(parking_rate)
-    return parking_rate_floats
-
-
-# get rate Saturady 9AM to 6PM
-def get_all_rate_sa_9a_6p():
-    # fetch
-    raw_data = fetch_raw_data(URL)
-    rate_regex = r'"r_sa_9a_6p":\s*"([^"]*)"'
-    rates = re.findall(rate_regex, raw_data)  # Find all matches
-
-    # format
-    parking_rate_floats = []
-    for item in rates:
-        parking_rate = float(item.split("$")[1])
-        parking_rate_floats.append(parking_rate)
-    return parking_rate_floats
-    
-
-
-# get rate Saturady 6PM to 10PM
-def get_all_rate_sa_6p_10():
-    # fetch
-    raw_data = fetch_raw_data(URL)
-    rate_regex = r'"r_sa_6p_10":\s*"([^"]*)"'
-    rates = re.findall(rate_regex, raw_data)  # Find all matches
-
-    # format
-    parking_rate_floats = []
-    for item in rates:
-        parking_rate = float(item.split("$")[1])
-        parking_rate_floats.append(parking_rate)
-    return parking_rate_floats
-    
-
-
-# get rate Sunday 9AM to 6PM
-def get_all_rate_su_9a_6p():
-    # fetch
-    raw_data = fetch_raw_data(URL)
-    rate_regex = r'"r_su_9a_6p":\s*"([^"]*)"'
-    rates = re.findall(rate_regex, raw_data)  # Find all matches
-
-    # format
-    parking_rate_floats = []
-    for item in rates:
-        parking_rate = float(item.split("$")[1])
-        parking_rate_floats.append(parking_rate)
-    return parking_rate_floats
-
-
-# get rate Sunday 6PM to 10PM
-def get_all_rate_su_6p_10():
-    # fetch
-    raw_data = fetch_raw_data(URL)
-    rate_regex = r'"r_su_6p_10":\s*"([^"]*)"'
-    rates = re.findall(rate_regex, raw_data)  # Find all matches
-
-    # format
-    parking_rate_floats = []
-    for item in rates:
-        parking_rate = float(item.split("$")[1])
-        parking_rate_floats.append(parking_rate)
-    return parking_rate_floats
-
-
-
+def create_list_of_carparking_dictionaries():
+    list_of_carparking_object = create_parking_objects()
+    list_of_carparking_dict = []
+    for object in list_of_carparking_object:
+        carparking_dict = {'meter_id': object.meter_id,
+                           'paybyphone_id': object.paybyphone_id,
+                           'meterhead': object.meterhead,
+                           'time_in_effect': object.time_in_effect,
+                           'credicard': object.creditcard,
+                           'geo_local_area': object.geo_local_area,
+                           'coordinate': object.coordinates}
+        list_of_carparking_dict.append(carparking_dict)
+    return list_of_carparking_dict
