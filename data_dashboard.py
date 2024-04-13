@@ -1,6 +1,34 @@
 from views.input_view import *
 from views.output_view import *
 from utils.model_helper import *
+from views.data_frame import *
+from views.map import *
+
+
+def run_find_nearet_parking_spot():
+    food_vendors = get_all_food_vendor_info()
+    user_input_geo_local_area = input_geo_local_area()
+    user_input_vendor_description = input_description_of_food()
+
+    first_result = find_food_vendor_based_on_user_preference(user_input_geo_local_area,
+                                                user_input_vendor_description,
+                                                food_vendors)
+    display_list_of_objects(first_result)
+
+    user_choose_vendor = input_final_selection_by_key()
+    final_result = find_food_vendor_by_key(user_choose_vendor, first_result)
+    display_list_of_objects(final_result)
+
+    # calculate the nearest parking spot
+    parking_spots = get_all_parking_info()
+    user_defined_distance = input_carparking_distance()
+    nearest_parking = find_nearest_parking_based_on_vendor(final_result, parking_spots, user_defined_distance)
+    # display_list_of_objects(nearest_parking)
+
+    data_frame = create_list_of_carparking_dictionaries(nearest_parking)
+    display_list_of_dictionaries(data_frame)
+    return data_frame
+
 
 def main():
     is_running = True
@@ -25,25 +53,9 @@ def main():
             display_list_of_objects(result)
 
         elif choice == "4":
-            # get results of food vendor based on user preference
-            food_vendors = get_all_food_vendor_info()
-            user_input_geo_local_area = input_geo_local_area()
-            user_input_vendor_description = input_description_of_food()
-
-            first_result = find_food_vendor_based_on_user_preference(user_input_geo_local_area,
-                                                      user_input_vendor_description,
-                                                      food_vendors)
-            display_list_of_objects(first_result)
-
-            user_choose_vendor = input_final_selection_by_key()
-            final_result = find_food_vendor_by_key(user_choose_vendor, first_result)
-            display_list_of_objects(final_result)
-
-            # calculate the nearest parking spot
-            parking_spots = get_all_parking_info()
-            nearest_parking = find_nearest_parking_based_on_vendor(final_result, parking_spots, 0.1)
-            display_list_of_objects(nearest_parking)
-
+            df = run_find_nearet_parking_spot()
+            view_map(df)
+            
 
         elif choice == "5":
             random_index_list = generate_10_random_index()

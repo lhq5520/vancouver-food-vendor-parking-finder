@@ -28,3 +28,9 @@ def input_vendor_key():
 def input_final_selection_by_key():
     vendor_key = input("Please enter the key from above list to confirm final food vendor selection: ")
     return vendor_key
+
+
+def input_carparking_distance():
+    distance = float(input("Please specify the longest distance in KM that you like to find the parking spot: "))
+    return distance
+
