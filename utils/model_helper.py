@@ -127,8 +127,8 @@ def haversine_formula(lon1: float, lat1: float, lon2: float, lat2: float) -> flo
     dlat = lat2 - lat1
     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
     c = 2 * asin(sqrt(a)) 
-    r = 6371 # Radius of earth in kilometers. 3956 for miles. 
-    distance = c * r
+    radius = 6371 # Radius of earth in kilometers. 3956 for miles. 
+    distance = c * radius
     return distance
 
 
@@ -146,6 +146,19 @@ def create_list_of_carparking_dictionaries(list_of_carparking_objects):
                            }
         list_of_carparking_dict.append(carparking_dict)
     return list_of_carparking_dict
+
+
+def create_list_of_foodvendor_dictionaries(list_of_foodvendor_objects):
+    list_of_foodvendor_dict = []
+    for object in list_of_foodvendor_objects:
+        food_vendor_dict = {'key': object.key,
+                            'business_name': object.business_name,
+                            'description': object.description,
+                            'coordinate': object.coordinate,
+                            'geo_local_area': object.geo_local_area
+                            }
+        list_of_foodvendor_dict.append(food_vendor_dict)
+    return list_of_foodvendor_dict
 
 
 def create_list_of_dictionaries(list_of_dictionaries):

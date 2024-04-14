@@ -4,7 +4,9 @@ VanStreet Parking
 
 This class is 
 '''
-
+import tkinter as tk
+from tkinter import simpledialog, messagebox, scrolledtext
+from views.gui_manager import *
 
 def main_menu():
     '''
@@ -22,12 +24,12 @@ def main_menu():
 
 def display_all_food_vendors(food_vendor_data):
     for food_vendor in food_vendor_data:
-        print(food_vendor)
+        append_to_display_area(str(food_vendor))
 
 
 def display_all_parking_info(car_parking_data):
     for parking_info in car_parking_data:
-        print(parking_info)
+        append_to_display_area(str(parking_info))
 
 
 def display_10_random_car_parking_info(random_number_list, car_parking_data):
@@ -40,7 +42,13 @@ def display_10_random_car_parking_info(random_number_list, car_parking_data):
 
 def display_list_of_objects(list_of_objects):
     if isinstance(list_of_objects, str):
-        print(list_of_objects)
+        append_to_display_area(str(list_of_objects))
     else:
         for objects in list_of_objects:
-            print(objects)
+            append_to_display_area(str(objects))
+
+# --------------------- Below for GUI------------------------
+
+
+
+

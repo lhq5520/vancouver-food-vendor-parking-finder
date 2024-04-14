@@ -1,3 +1,6 @@
+import tkinter as tk
+from tkinter import simpledialog, messagebox, scrolledtext
+from views.gui_manager import *
 
 
 def user_choice():
@@ -5,18 +8,13 @@ def user_choice():
     return choice
 
 
-def input_meter_id():
-    meter_id = input("Enter Meter ID: ")
-    return meter_id
-
-
-def input_geo_local_area():
-    geo_local_area = input("Enter a geo local area: ")
-    return geo_local_area
+def prompt_user_to_do():
+    global display_area
+    append_to_display_area("Please use the pop-up window to select/input the answer")
 
 
 def input_description_of_food():
-    vendor_description = input("Enter types of food you want: ")
+    vendor_description = "Enter types of food you want: "
     return vendor_description
 
 
@@ -30,7 +28,10 @@ def input_final_selection_by_key():
     return vendor_key
 
 
-def input_carparking_distance():
-    distance = float(input("Please specify the longest distance in KM that you like to find the parking spot: "))
+def prompt_carparking_distance():
+    distance = "Please specify the longest distance in KM that you like to find the parking spot: "
     return distance
+
+# --------------------- Below for GUI------------------------
+
 

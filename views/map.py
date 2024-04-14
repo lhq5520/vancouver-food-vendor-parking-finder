@@ -1,7 +1,7 @@
 import plotly.express as px
 
 
-def view_map(data_frame):
+def display_parking_spot_map(data_frame):
     px.set_mapbox_access_token(open(".mapbox_token").read())
     df = data_frame
     fig = px.scatter_mapbox(df,
