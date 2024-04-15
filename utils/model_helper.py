@@ -1,16 +1,17 @@
 '''
 
 '''
-from utils.car_parking_fetch import create_parking_objects
-from utils.food_vendor_fetch import create_food_vendor_objects
-import random
+from utils.data_fetch import create_parking_objects
+from utils.data_fetch import create_food_vendor_objects
 from math import radians, cos, sin, asin, sqrt
 import pandas as pd
 
 FIRST_ELEMENT = 0
+SECOND_ELEMENT = 1
 
 
 # -------------------- get all informations ----------------------
+
 def get_all_parking_info():
     parking_info_all = create_parking_objects()
     return parking_info_all
@@ -19,19 +20,6 @@ def get_all_parking_info():
 def get_all_food_vendor_info():
     food_vendor_info_all = create_food_vendor_objects()
     return food_vendor_info_all
-
-
-def generate_10_random_index():
-    '''
-    print random 10 objects from the list
-    '''
-    car_parking_list = get_all_parking_info()
-    last_element = len(car_parking_list)
-    random_number_list = []
-    for i in range(10):
-        random_number = random.randrange(FIRST_ELEMENT, last_element)
-        random_number_list.append(random_number)
-    return random_number_list
 
 
 # -------------------- search specific data ----------------------
@@ -106,8 +94,8 @@ def find_nearest_parking_based_on_vendor(specified_food_vendor, parking_spot, us
 
     nearest_parking_spot = []
     for parking_spot in all_parking_spot:
-        distance = haversine_formula(vendors_coordinate[0][0], vendors_coordinate[0][1], 
-                                     parking_spot.coordinates[0], parking_spot.coordinates[1])
+        distance = haversine_formula(vendors_coordinate[FIRST_ELEMENT][FIRST_ELEMENT], vendors_coordinate[FIRST_ELEMENT][SECOND_ELEMENT], 
+                                     parking_spot.coordinates[FIRST_ELEMENT], parking_spot.coordinates[SECOND_ELEMENT])
         if distance < user_input_distance:
             nearest_parking_spot.append(parking_spot)
     return nearest_parking_spot
@@ -164,3 +152,22 @@ def create_list_of_foodvendor_dictionaries(list_of_foodvendor_objects):
 def create_list_of_dictionaries(list_of_dictionaries):
     df = pd.DataFrame(list_of_dictionaries)
     return df
+
+
+def get_unique_values_from_column(data_frame, column_name):
+    """
+    Removes duplicate rows based on a specified column and returns a list of unique values from that column.
+
+    Args:
+    data_frame (pd.DataFrame): The DataFrame to process.
+    column_name (str): The name of the column to check for unique values.
+
+    Returns:
+    list: A list containing unique values from the specified column.
+    """
+    if column_name in data_frame.columns:
+        drop_duplicate_column = data_frame.drop_duplicates(subset=[column_name])
+        unique_values_list = drop_duplicate_column[column_name].tolist()
+        return unique_values_list
+    else:
+        raise ValueError(f"Column '{column_name}' does not exist in the DataFrame.")

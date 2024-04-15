@@ -4,6 +4,33 @@ from tkinter import scrolledtext, ttk, simpledialog
 # Initialize the display_area as None; it will be set when the GUI starts.
 display_area = None
 
+
+def setup_root(root, title="Parking Info System"):
+    """
+    Configure the root window with a title and any other necessary settings.
+
+    Args:
+    root (tk.Tk): The root window of the application.
+    title (str): The title to set for the window.
+    """
+    root.title(title)
+
+
+def setup_frame(root):
+    """
+    Create and configure the main frame in the tkinter application.
+
+    Args:
+    root (tk.Tk): The root window of the application.
+
+    Returns:
+    tk.Frame: The configured frame.
+    """
+    frame = tk.Frame(root)
+    frame.pack(padx=10, pady=10)
+    return frame
+
+
 def setup_display_area(frame):
     global display_area
     display_area = scrolledtext.ScrolledText(frame, height=15, width=70)
@@ -28,7 +55,17 @@ def clear_display_area():
         display_area.configure(state='disabled')
 
 
-def gui_input_from_list(prompt, options):
+def setup_buttons(frame, run_view_all_parking_info, run_view_all_food_vendor,
+                  run_look_up_parking_by_geo, run_find_nearest_parking_spot, run_clear_display, exit_app):
+    tk.Button(frame, text="View All Parking Info", command=run_view_all_parking_info).pack(fill=tk.X)
+    tk.Button(frame, text="View All Food Vendors", command=run_view_all_food_vendor).pack(fill=tk.X)
+    tk.Button(frame, text="Look Up Parking Info by Geo Area", command=run_look_up_parking_by_geo).pack(fill=tk.X)
+    tk.Button(frame, text="Search Nearest Parking Spot By Preferred Food Vendor", command=run_find_nearest_parking_spot).pack(fill=tk.X)
+    tk.Button(frame, text="Clear Display", command=run_clear_display).pack(fill=tk.X)
+    tk.Button(frame, text="Exit", command=exit_app).pack(fill=tk.X)
+
+
+def gui_input_from_drop_down_select(popup_title, options, prompt):
     """
     Creates a GUI dialog with a Combobox for input, restricting input to predefined options.
 
@@ -47,7 +84,7 @@ def gui_input_from_list(prompt, options):
     root.withdraw()  # Hide the main window
 
     popup = tk.Toplevel()
-    popup.title("Selection")
+    popup.title(popup_title)
     label = tk.Label(popup, text=prompt)
     label.pack(padx=10, pady=10)
 
@@ -65,9 +102,9 @@ def gui_input_from_list(prompt, options):
     return user_input.get()  # Return the selected option or the default first option
 
 
-def gui_input_from_prompt(prompt):
+def gui_input_from_type(prompt):
     root = tk.Tk()
     root.withdraw()  # Hide the main window
-    user_input = simpledialog.askstring("Input", prompt)
+    user_input = simpledialog.askstring("Please Answer:", prompt)
     root.destroy()
     return user_input
