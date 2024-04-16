@@ -1,25 +1,16 @@
 '''
+CS5001 Spring 2024 Final Project
+@WeifanLi
 
+function that search for the information
 '''
-from utils.data_fetch import create_parking_objects
-from utils.data_fetch import create_food_vendor_objects
 from math import radians, cos, sin, asin, sqrt
 import pandas as pd
 
 FIRST_ELEMENT = 0
 SECOND_ELEMENT = 1
-
-
-# -------------------- get all informations ----------------------
-
-def get_all_parking_info():
-    parking_info_all = create_parking_objects()
-    return parking_info_all
-
-
-def get_all_food_vendor_info():
-    food_vendor_info_all = create_food_vendor_objects()
-    return food_vendor_info_all
+TWO = 2
+EARTH_RADIUS = 6371
 
 
 # -------------------- search specific data ----------------------
@@ -84,13 +75,13 @@ def find_food_vendor_based_on_user_preference(geo_local_area,
     return final_search_result
 
 
-def find_nearest_parking_based_on_vendor(specified_food_vendor, parking_spot, user_input_distance):
+def find_nearest_parking_based_on_vendor(specified_food_vendor, parking_spot, user_input_distance, list_of_parking_obj):
     vendors_coordinate = []
     for food_vendor in specified_food_vendor:
         vendor_coordinate = food_vendor.coordinate
         vendors_coordinate.append(vendor_coordinate)
 
-    all_parking_spot = get_all_parking_info()
+    all_parking_spot = list_of_parking_obj
 
     nearest_parking_spot = []
     for parking_spot in all_parking_spot:
@@ -113,14 +104,30 @@ def haversine_formula(lon1: float, lat1: float, lon2: float, lat2: float) -> flo
     # Haversine formula 
     dlon = lon2 - lon1
     dlat = lat2 - lat1
-    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * asin(sqrt(a)) 
-    radius = 6371 # Radius of earth in kilometers. 3956 for miles. 
-    distance = c * radius
+    intermediate_value = sin(dlat/TWO)**TWO + cos(lat1) * cos(lat2) * sin(dlon/TWO)**TWO
+    central_angle = 2 * asin(sqrt(intermediate_value)) 
+    radius = EARTH_RADIUS # Radius of earth in kilometers. 3956 for miles. 
+    distance = central_angle * radius
     return distance
 
 
 def create_list_of_carparking_dictionaries(list_of_carparking_objects):
+    '''
+    Purpose: Convert a list of CarParking objects into a
+    list of dictionaries containing parking data attributes.
+    Raises a ValueError if no CarParking data is available to convert.
+
+    Parameters:
+        list_of_carparking_objects(list): a list of car_parking objects
+
+    Returns:
+        list_of_carparking_dict (list of dicts): A list of dictionaries, each representing a parking meter with its associated data.
+
+    Raises:
+        ValueError: If no CarParking objects are available for conversion.
+    '''
+    if not list_of_carparking_objects:
+        raise ValueError("No parking data available to create dictionaries.")
     list_of_carparking_dict = []
     for object in list_of_carparking_objects:
         carparking_dict = {'meter_id': object.meter_id,
@@ -129,8 +136,8 @@ def create_list_of_carparking_dictionaries(list_of_carparking_objects):
                            'time_in_effect': object.time_in_effect,
                            'credicard': object.creditcard,
                            'geo_local_area': object.geo_local_area,
-                           'lon': object.coordinates[0],
-                           'lat': object.coordinates[1]
+                           'lon': object.coordinates[FIRST_ELEMENT],
+                           'lat': object.coordinates[SECOND_ELEMENT]
                            }
         list_of_carparking_dict.append(carparking_dict)
     return list_of_carparking_dict

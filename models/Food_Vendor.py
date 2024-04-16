@@ -1,14 +1,16 @@
 '''
-VanStreet Parking
+CS5001 Spring 2024 Final Project
 @WeifanLi
 
-Car_Parking class inherited from ParkingSpot and imported from online
+Food_Vendor class that used to represent models of food vendors in vancouver
 '''
 
 
 class FoodVendor():
     '''
-    food vendor
+    Represent a food vendor with comprehensive attributes
+    such as a unique key, business name, description, coordinates, and geographical area.
+    This class provides methods for representing the food vendor as a string
     '''
 
     def __init__(self, key, business_name, description, coordinate,

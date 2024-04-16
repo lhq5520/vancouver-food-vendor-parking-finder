@@ -5,7 +5,7 @@ from tkinter import scrolledtext, ttk, simpledialog
 display_area = None
 
 
-def setup_root(root, title="Parking Info System"):
+def setup_root(root, title="Vancouver Street Parking Info System"):
     """
     Configure the root window with a title and any other necessary settings.
 

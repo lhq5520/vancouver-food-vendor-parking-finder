@@ -1,18 +1,16 @@
 '''
-VanStreet Parking
+CS5001 Spring 2024 Final Project
 @WeifanLi
 
-Car_Parking class inherited from ParkingSpot and imported from online
+Car_Parking class that used to represent models
 '''
 
 
 class CarParking():
     '''
-    r_mf_9a_6p, r_mf_6p_10, r_sa_9a_6p, r_sa_6p_10, r_su_9a_6p, r_su_6p_10
-    are all rates at specific time
-
-    t_mf_9a_6p, t_mf_6p_10, t_sa_9a_6p, t_sa_6p_10, t_su_9a_6p, t_su_6p_10,
-    are all specific time limit
+    Represent a car parking spot with detailed attributes like
+    meter ID, PayByPhone ID, meterhead, time in effect, credit card acceptance, geographical area, and coordinates.
+    This class encapsulates all relevant details of a parking spot and provides a string representation for easy viewing.
     '''
 
     def __init__(self, meter_id, paybyphone_id, meterhead, time_in_effect,
@@ -28,7 +26,6 @@ class CarParking():
         self.geo_local_area = geo_local_area
         self.coordinates = coordinates
 
-
     def __str__(self):
         return (f"Meter ID: {self.meter_id}\n"
                 f"PayByPhone ID: {self.paybyphone_id}\n"
@@ -37,3 +34,20 @@ class CarParking():
                 f"Credit Card Accepted: {'Yes' if self.creditcard else 'No'}\n"
                 f"Geographical Area: {self.geo_local_area}\n"
                 f"Coordinates: {self.coordinates}\n")
+
+    def compare_geo_area(self, geo_local_area):
+        '''
+        Compare the geographical area of this parking spot with another.
+
+        Parameters:
+            geo_local_area (str): user's input to compare with.
+
+        Returns:
+            bool: True if both objects are in the same geographical area, otherwise False.
+        '''
+        result = False
+        if self.geo_local_area == geo_local_area:
+            result = True
+        else:
+            result = False
+        return result

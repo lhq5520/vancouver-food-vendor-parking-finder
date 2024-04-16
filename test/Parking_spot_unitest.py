@@ -1,6 +1,7 @@
 import unittest
 from models.Parking_Spot import ParkingSpot
 
+
 # python3 -m unittest Parking_spot_unitest.py
 class TestParkingSpot(unittest.TestCase):
 
