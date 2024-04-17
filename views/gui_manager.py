@@ -1,5 +1,11 @@
+'''
+CS5001 Spring 2024 Final Project
+@WeifanLi
+
+function that used to create gui widget and area
+'''
 import tkinter as tk
-from tkinter import scrolledtext, ttk, simpledialog
+from tkinter import scrolledtext, ttk, simpledialog, messagebox
 
 # Initialize the display_area as None; it will be set when the GUI starts.
 display_area = None
@@ -7,24 +13,27 @@ display_area = None
 
 def setup_root(root, title="Vancouver Street Parking Info System"):
     """
-    Configure the root window with a title and any other necessary settings.
+    Purpose: Configure the root window of the tkinter application
+    with a title and necessary settings.
 
-    Args:
-    root (tk.Tk): The root window of the application.
-    title (str): The title to set for the window.
+    Parameters:
+        root (tk.Tk): The root window of the application.
+        title (str): The title to set for the window.
+
+    Returns: None
     """
     root.title(title)
 
 
 def setup_frame(root):
     """
-    Create and configure the main frame in the tkinter application.
+    Purpose: Create and configure the main frame in the tkinter application.
 
-    Args:
-    root (tk.Tk): The root window of the application.
+    Parameters:
+        root (tk.Tk): The root window of the application.
 
     Returns:
-    tk.Frame: The configured frame.
+        tk.Frame: The configured frame that will be used to hold other widgets.
     """
     frame = tk.Frame(root)
     frame.pack(padx=10, pady=10)
@@ -32,6 +41,16 @@ def setup_frame(root):
 
 
 def setup_display_area(frame):
+    """
+    Purpose: Set up a scrolled text area within a given frame for
+    displaying output to the user.
+
+    Parameters:
+        frame (tk.Frame): The frame in which the
+        scrolled text area will be placed.
+
+    Returns: None
+    """
     global display_area
     display_area = scrolledtext.ScrolledText(frame, height=15, width=70)
     display_area.pack(padx=5, pady=5)
@@ -39,6 +58,15 @@ def setup_display_area(frame):
 
 
 def append_to_display_area(text):
+    """
+    Purpose: Append text to the scrollable display area,
+    ensuring it remains disabled for editing.
+
+    Parameters:
+        text (str): The text to append to the display area.
+
+    Returns: None
+    """
     global display_area
     if display_area:
         display_area.configure(state='normal')
@@ -48,6 +76,13 @@ def append_to_display_area(text):
 
 
 def clear_display_area():
+    """
+    Purpose: Clear all text from the display area.
+
+    Parameters: None
+
+    Returns: None
+    """
     global display_area
     if display_area:
         display_area.configure(state='normal')
@@ -57,6 +92,20 @@ def clear_display_area():
 
 def setup_buttons(frame, run_view_all_parking_info, run_view_all_food_vendor,
                   run_look_up_parking_by_geo, run_find_nearest_parking_spot, run_clear_display, exit_app):
+    """
+    Purpose: Set up buttons in the specified frame for various application functionalities.
+
+    Parameters:
+        frame (tk.Frame): The frame in which to place the buttons.
+        run_view_all_parking_info (function): Callback function to view all parking information.
+        run_view_all_food_vendor (function): Callback function to view all food vendor information.
+        run_look_up_parking_by_geo (function): Callback function to look up parking information by geographic area.
+        run_find_nearest_parking_spot (function): Callback function to find the nearest parking spot to a preferred food vendor.
+        run_clear_display (function): Callback function to clear the display area.
+        exit_app (function): Callback function to exit the application.
+
+    Returns: None
+    """
     tk.Button(frame, text="View All Parking Info", command=run_view_all_parking_info).pack(fill=tk.X)
     tk.Button(frame, text="View All Food Vendors", command=run_view_all_food_vendor).pack(fill=tk.X)
     tk.Button(frame, text="Look Up Parking Info by Geo Area", command=run_look_up_parking_by_geo).pack(fill=tk.X)
@@ -67,14 +116,18 @@ def setup_buttons(frame, run_view_all_parking_info, run_view_all_food_vendor,
 
 def gui_input_from_drop_down_select(popup_title, options, prompt):
     """
-    Creates a GUI dialog with a Combobox for input, restricting input to predefined options.
+    Purpose: Create a GUI dialog with a Combobox for user input, allowing selection from predefined options.
 
-    Args:
-    prompt (str): The prompt to display to the user.
-    options (list): A list of strings that the user can select from.
+    Parameters:
+        popup_title (str): The title for the popup window.
+        options (list): A list of strings that the user can select from.
+        prompt (str): The prompt to display to the user in the popup.
 
     Returns:
-    str: The selected option or None if no selection is made.
+        str: The selected option, or None if no selection is made.
+
+    Raises:
+        None
     """
     def on_select():
         user_input.set(combo.get())  # Update the user_input with the selected option
@@ -102,9 +155,22 @@ def gui_input_from_drop_down_select(popup_title, options, prompt):
     return user_input.get()  # Return the selected option or the default first option
 
 
-def gui_input_from_type(prompt):
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
-    user_input = simpledialog.askstring("Please Answer:", prompt)
-    root.destroy()
-    return user_input
+def setup_messagebox(message_type, title, message):
+    """
+    Purpose: Display a messagebox with a given message type, title, and message.
+
+    Parameters:
+        message_type (str): The type of messagebox to display ('info', 'warning', 'error').
+        title (str): The title for the messagebox window.
+        message (str): The message content for the messagebox.
+
+    Returns: None
+    """
+    if message_type == 'Info':
+        messagebox.showinfo(title, message)
+    elif message_type == 'Warning':
+        messagebox.showwarning(title, message)
+    elif message_type == 'Error':
+        messagebox.showerror(title, message)
+    else:
+        raise ValueError("Invalid message type specified.")

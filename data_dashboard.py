@@ -1,12 +1,24 @@
+'''
+CS5001 Spring 2024 Final Project
+@WeifanLi
+
+data_dashboard - the controller
+
+It creates objects and directs the control flow between view and model
+'''
+
 from utils.model_helper import *
+from utils.data_fetch import *
 from models.Car_Parking import CarParking
 from models.Food_Vendor import FoodVendor
-from utils.data_fetch import *
 
 from views.gui_view import *
 from views.parking_map import *
 from views.gui_manager import *
 import tkinter as tk
+from tkinter import messagebox
+
+import requests
 
 
 CARPARKING_URL = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/parking-meters/exports/json?lang=en&timezone=America%2FLos_Angeles"
@@ -111,6 +123,15 @@ def create_parking_objects():
 
 # click view all parking info
 def run_view_all_parking_info():
+    '''
+    Purpose: Clear the display area and show all parking information available.
+
+    Parameters: None
+
+    Returns: None
+
+    Raises: None
+    '''
     run_clear_display()
     parking_info = create_parking_objects()
     display_list_of_objects(parking_info)
@@ -118,6 +139,15 @@ def run_view_all_parking_info():
 
 # click view all food vendor info
 def run_view_all_food_vendor():
+    '''
+    Purpose: Clear the display area and show all food vendor information.
+
+    Parameters: None
+
+    Returns: None
+
+    Raises: None
+    '''
     run_clear_display()
     food_vendors = create_food_vendor_objects()
     display_list_of_objects(food_vendors)
@@ -125,6 +155,16 @@ def run_view_all_food_vendor():
 
 # click Look Up Parking Info by Geo Area
 def run_look_up_parking_by_geo():
+    '''
+    Purpose: Allows the user to look up parking information by geographical area through a GUI dropdown select.
+
+    Parameters: None
+
+    Returns: None
+
+    Raises: 
+        ValueError: If no parking information is available for the selected geographical area.
+    '''
     run_clear_display()
     # generate for the unique select drop down options
     prompt_user_to_do()
@@ -143,6 +183,16 @@ def run_look_up_parking_by_geo():
 
 # click Search Nearest Parking Spot By Preferred Food Vendor
 def run_find_nearet_parking_spot():
+    '''
+    Purpose: Locates the nearest parking spots to a selected food vendor based on user preferences entered through GUI.
+
+    Parameters: None
+
+    Returns: None
+
+    Raises:
+        ValueError: If no matching food vendor or parking spots are found within the specified distance.
+    '''
     prompt_user_to_do()
 
     run_clear_display()
@@ -162,9 +212,14 @@ def run_find_nearet_parking_spot():
     second_pop_up_title = pop_title_locate_food_vendor_by_type()
     second_pop_up_prompt = pop_prompt_locate_food_vendor_by_type()
     user_input_vendor_description = gui_input_from_drop_down_select(second_pop_up_title, unique_foodtype_generation, second_pop_up_prompt)
+
     first_result = find_food_vendor_based_on_user_preference(user_input_geo_local_area,
                                                 user_input_vendor_description,
                                                 food_vendors)
+    if not first_result:
+        message = message_box_no_result_prompt()
+        title = message_box_no_result_title()
+        setup_messagebox("Error", title, message)
     display_list_of_objects(first_result)
 
     # based on user's choice to select specific food vendor
@@ -180,8 +235,10 @@ def run_find_nearet_parking_spot():
 
     # calculate the nearest parking spot
     parking_spots = create_parking_objects()
-    prompt_input_distance = prompt_carparking_distance()
-    user_defined_distance = float(gui_input_from_type(prompt_input_distance))
+    forth_pop_up_title = pop_title_generate_map()
+    forth_pop_up_prompt = pop_prompt_generate_map()
+    user_choose_distance = generate_generate_map_distance_options()
+    user_defined_distance = float(gui_input_from_drop_down_select(forth_pop_up_title, user_choose_distance, forth_pop_up_prompt))
     nearest_parking = find_nearest_parking_based_on_vendor(final_result, parking_spots, user_defined_distance, parking_spots)
 
     data_frame = create_list_of_carparking_dictionaries(nearest_parking)
@@ -189,10 +246,30 @@ def run_find_nearet_parking_spot():
 
 
 def run_clear_display():
+    '''
+    Purpose: Clears the display area in the GUI to prepare for new output.
+
+    Parameters: None
+
+    Returns: None
+
+    Raises: None
+    '''
     clear_display_area()
 
 
 def exit_app(root):
+    '''
+    Purpose: Exits the application by closing the GUI window and terminating the process.
+
+    Parameters:
+        root (Tk): The root window of the Tkinter application.
+
+    Returns: None
+
+    Raises: None
+    '''
+    
     root.quit()
     root.destroy()
     quit()
@@ -212,8 +289,24 @@ def main():
         setup_buttons(frame, run_view_all_parking_info, run_view_all_food_vendor,
                     run_look_up_parking_by_geo, run_find_nearet_parking_spot, run_clear_display, exit)
         root.mainloop()
+    except FileNotFoundError as fnf_error:
+        print("File not found error:", fnf_error)
+        messagebox.showerror("File Not Found", f"An essential file is missing: {fnf_error}")
+    except PermissionError as pe_error:
+        print("Permission error:", pe_error)
+        messagebox.showerror("Permission Error", f"Permission denied: {pe_error}")
+    except ValueError as ve_error:
+        print("Value error:", ve_error)
+        messagebox.showerror("Value Error", f"Invalid data encountered: {ve_error}")
+    except TypeError as te_error:
+        print("Type error:", te_error)
+        messagebox.showerror("Type Error", f"Type mismatch or invalid type used: {te_error}")
+    except requests.HTTPError as http_error:
+        print("HTTP error:", http_error)
+        messagebox.showerror("HTTP Error", f"HTTP request failed with status {http_error.response.status_code}: {http_error}")
     except Exception as e:
         print("An error occurred:", e)
+        messagebox.showerror("Error", f"An unexpected error occurred: {e}")
 
 
 if __name__ == '__main__':
