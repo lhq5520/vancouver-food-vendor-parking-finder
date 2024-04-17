@@ -14,6 +14,7 @@ from models.Food_Vendor import FoodVendor
 
 from views.gui_view import *
 from views.parking_map import *
+from views.bar_graph import *
 from views.gui_manager import *
 import tkinter as tk
 from tkinter import messagebox
@@ -134,7 +135,12 @@ def run_view_all_parking_info():
     '''
     run_clear_display()
     parking_info = create_parking_objects()
+    parking_dict = create_list_of_carparking_dictionaries(parking_info)
+    parking_data_frame = create_list_of_dictionaries(parking_dict)
+    parking_counts = parking_data_frame['geo_local_area'].value_counts()
+
     display_list_of_objects(parking_info)
+    show_food_vendor_bar_graph(parking_counts)
 
 
 # click view all food vendor info
@@ -150,7 +156,12 @@ def run_view_all_food_vendor():
     '''
     run_clear_display()
     food_vendors = create_food_vendor_objects()
+    food_vendor_dict = create_list_of_foodvendor_dictionaries(food_vendors)
+    food_vendor_data_frame = create_list_of_dictionaries(food_vendor_dict)
+    vendor_counts = food_vendor_data_frame['geo_local_area'].value_counts()
+    
     display_list_of_objects(food_vendors)
+    show_food_vendor_bar_graph(vendor_counts)
 
 
 # click Look Up Parking Info by Geo Area
@@ -269,7 +280,7 @@ def exit_app(root):
 
     Raises: None
     '''
-    
+
     root.quit()
     root.destroy()
     quit()

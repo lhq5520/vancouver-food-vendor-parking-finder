@@ -35,19 +35,6 @@ def prompt_user_to_do():
     append_to_display_area("Please use the pop-up window to select/input the answer. Closing window will result in defult Selection.")
 
 
-def prompt_carparking_distance():
-    """
-    Purpose: Provide a prompt string asking for the maximum distance to search for parking.
-
-    Parameters: None
-
-    Returns:
-        str: The prompt asking for distance in kilometers.
-    """
-    distance = "Please specify the longest distance in KM that you like to find the parking spot: "
-    return distance
-
-
 def pop_title_look_up_parking_by_geo():
     """
     Purpose: Provide the title for the pop-up window used to look up parking by geographical area.
@@ -176,7 +163,7 @@ def pop_prompt_generate_map():
     Returns:
         str: The prompt message for the popup window.
     """
-    pop_title = "Please Specify the Longest Distance in KM That You Like to Find the Parking Spot:"
+    pop_title = "Please Specify the Longest Distance in KM That You Like to Find the Parking Spot: \n(0.1 is recommended since more distance more info on the map)"
     return pop_title
 
 
