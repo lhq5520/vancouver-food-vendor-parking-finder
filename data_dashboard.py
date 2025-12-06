@@ -159,7 +159,7 @@ def run_view_all_food_vendor():
     food_vendor_dict = create_list_of_foodvendor_dictionaries(food_vendors)
     food_vendor_data_frame = create_list_of_dictionaries(food_vendor_dict)
     vendor_counts = food_vendor_data_frame['geo_local_area'].value_counts()
-    
+
     display_list_of_objects(food_vendors)
     show_food_vendor_bar_graph(vendor_counts)
 
@@ -173,7 +173,7 @@ def run_look_up_parking_by_geo():
 
     Returns: None
 
-    Raises: 
+    Raises:
         ValueError: If no parking information is available for the selected geographical area.
     '''
     run_clear_display()
