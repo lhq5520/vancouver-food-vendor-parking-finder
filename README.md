@@ -1,55 +1,48 @@
 # Vancouver Food Vendor → Nearest Parking Finder (GIS)
 
-Van Parking Information System
-==============================
+This project is a GUI-based data dashboard for exploring van/vehicle parking and food vendor information in Vancouver. It fetches data, processes it with Python, and visualises it with interactive charts and a parking map.
 
-This project is a GUI-based data dashboard for exploring van/vehicle parking and food vendor information. It fetches data, processes it with Python, and visualises it with interactive charts and a parking map.
-
-Environment
------------
+## Environment
 
 - Recommended Python version: **3.12.3** (the project was developed and tested with this version).
 
-Installation
-------------
+## Installation
 
 1. (Optional but recommended) Create and activate a virtual environment in the project root:
 
-	```powershell
-	python -m venv .venv
-	.venv\Scripts\activate
-	```
+   ```powershell
+   python -m venv .venv
+   .venv\\Scripts\\activate
+   ```
 
 2. Install dependencies from `requirements.txt`:
 
-	```powershell
-	pip install -r requirements.txt
-	```
+   ```powershell
+   pip install -r requirements.txt
+   ```
 
-	Main packages include:
+   Main packages include:
 
-	- `plotly==5.20.0`
-	- `pandas`
-	- `requests`
+   - `plotly==5.20.0`
+   - `pandas`
+   - `requests`
 
-How to Run
-----------
+## How to Run
 
 1. Make sure you are in the project root folder `Van_Parking_Info_System`.
 2. Activate your virtual environment (if you created one).
 3. Run the main dashboard script:
 
-	```powershell
-	python data_dashboard.py
-	```
+   ```powershell
+   python data_dashboard.py
+   ```
 
 4. Follow the GUI instructions:
-	- Load or refresh parking data.
-	- View bar graphs and other visualisations.
-	- Explore the parking map and related information panels.
+   - Load or refresh parking data.
+   - View bar graphs and other visualisations.
+   - Explore the parking map and related information panels.
 
-Project Structure
------------------
+## Project Structure
 
 - `data_dashboard.py`: Entry point of the application, launching the GUI dashboard.
 - `models/`: Data models for parking spots, vehicles, food vendors, etc.
@@ -57,14 +50,12 @@ Project Structure
 - `views/`: GUI components, bar charts, parking map, and other visual elements.
 - `tests/`: Unit tests to verify models and utilities.
 
-Tips
-----
+## Tips
 
 - If you see "ModuleNotFoundError" or similar, make sure you have installed all dependencies in the active environment with `pip install -r requirements.txt`.
 - After changing the code, re-run `python data_dashboard.py` to refresh the GUI.
 
-Screenshots
-----------
+## Screenshots
 
 Main GUI window:
 
@@ -91,4 +82,3 @@ Number of food vendors by geographical area (sample and full data):
 
 ![Food vendors by area (sample)](images/bar_food_vendors_small.png)
 ![Food vendors by area (full data)](images/bar_food_vendors_full.png)
-
