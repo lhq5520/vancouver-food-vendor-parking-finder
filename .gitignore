@@ -55,3 +55,6 @@ coverage.xml
 # OS files
 Thumbs.db
 .DS_Store
+
+# token
+.mapbox_token

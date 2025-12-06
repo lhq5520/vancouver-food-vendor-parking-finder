@@ -55,6 +55,7 @@
 
 - 如果运行时报 “找不到模块（ModuleNotFoundError）” 等错误，请确认已在当前环境中执行过 `pip install -r requirements.txt`。
 - 修改代码后，重新运行 `python data_dashboard.py` 以刷新界面和可视化结果。
+ - 若要正常显示交互式停车地图，需要在项目根目录的 `.mapbox_token` 文件中填写**你自己的 Mapbox access token**（仅一行字符串即可，注意不要把个人 token 提交到 Git 仓库）。
 
 ## 界面示例
 
