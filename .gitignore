@@ -56,5 +56,5 @@ coverage.xml
 Thumbs.db
 .DS_Store
 
-# token
+# Secrets / tokens
 .mapbox_token

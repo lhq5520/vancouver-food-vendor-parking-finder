@@ -54,7 +54,7 @@ This project is a GUI-based data dashboard for exploring van/vehicle parking and
 
 - If you see "ModuleNotFoundError" or similar, make sure you have installed all dependencies in the active environment with `pip install -r requirements.txt`.
 - After changing the code, re-run `python data_dashboard.py` to refresh the GUI.
- - To display the interactive parking map, you must provide **your own Mapbox access token** in the `.mapbox_token` file in the project root (one token string per file, do **not** commit your personal token to Git).
+- To display the interactive parking map, you must provide **your own Mapbox access token** in the `.mapbox_token` file in the project root (one token string per file, do **not** commit your personal token to Git).
 
 ## Screenshots
 
